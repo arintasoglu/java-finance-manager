@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.databaseconnection.DatabaseConnection;
@@ -73,6 +75,57 @@ public class JdbcAccountRepository implements AccountRepository {
 		} catch (SQLException e) {
 			throw new DataAccessException(" "); // TODO
 		}
+
+	}
+
+	@Override
+	public List<Account> findAllUser(String email) {
+		ResultSet rs = null;
+		List<Account> users = new ArrayList<>();
+		Account acc = null;
+		try (Connection con = DatabaseConnection.provideConnection()) {
+			PreparedStatement pst = con.prepareStatement("select * from accountf where email = ?");
+			pst.setString(1, email);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				UUID id = UUID.fromString(rs.getString("id"));
+				String name = rs.getString("username");
+				String admin_name = rs.getString("email");
+				String pass = rs.getString("passwordf");
+				Role role = Role.fromString(rs.getString("role"));
+				acc = new Account(id, name, admin_name, pass, role);
+				users.add(acc);
+
+			}
+			return users;
+
+		} catch (SQLException e) {
+			throw new DataAccessException("");
+		}
+
+	}
+
+	@Override
+	public int delete(String username) {
+		int b;
+		try (Connection con = DatabaseConnection.provideConnection()) {
+			PreparedStatement pst = con.prepareStatement("select * from accountf where username = ?");
+			pst.setString(1, username);
+			ResultSet rs = pst.executeQuery();
+			String id = "";
+			while (rs.next()) {
+				id = rs.getString("id");
+			}
+			PreparedStatement ps = con.prepareStatement("delete from accountf where id = ?");
+			ps.setString(1, id);
+			b = ps.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DataAccessException(" ");
+
+		}
+
+		return b;
 
 	}
 }

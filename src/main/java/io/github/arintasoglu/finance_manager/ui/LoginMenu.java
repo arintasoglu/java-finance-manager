@@ -10,6 +10,7 @@ import io.github.arintasoglu.finance_manager.model.Role;
 import io.github.arintasoglu.finance_manager.service.AccountService;
 import io.github.arintasoglu.finance_manager.service.AuthService;
 import io.github.arintasoglu.finance_manager.service.Session;
+import io.github.arintasoglu.finance_manager.util.PasswordUtil;
 
 public class LoginMenu {
 	Scanner scan = new Scanner(System.in);
@@ -45,18 +46,18 @@ public class LoginMenu {
 
 				} catch (InvalidInputException | AuthenticationException e) {
 					System.out.println(e.getMessage());
-		            System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-		            String answer = scan.next();
+					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
+					String answer = scan.next();
 
-		            if (answer.equalsIgnoreCase("N")) {
-		                System.out.println("Programm wird beendet.");
-		                System.exit(0);
-		            }
+					if (answer.equalsIgnoreCase("N")) {
+						System.out.println("Programm wird beendet.");
+						System.exit(0);
+					}
 				}
 			}
 
 			ses.login(account);
-			admin.show();
+			admin.show(account);
 			break;
 
 		case 2:
@@ -73,13 +74,13 @@ public class LoginMenu {
 
 				} catch (InvalidInputException | AuthenticationException e) {
 					System.out.println(e.getMessage());
-		            System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-		            String answer = scan.next();
+					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
+					String answer = scan.next();
 
-		            if (answer.equalsIgnoreCase("N")) {
-		                System.out.println("Programm wird beendet.");
-		                System.exit(0);
-		            }
+					if (answer.equalsIgnoreCase("N")) {
+						System.out.println("Programm wird beendet.");
+						System.exit(0);
+					}
 				}
 			}
 			ses.login(account);
@@ -108,18 +109,18 @@ public class LoginMenu {
 
 				} catch (InvalidInputException e) {
 					System.out.println(e.getMessage());
-		            System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-		            String answer = scan.next();
+					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
+					String answer = scan.next();
 
-		            if (answer.equalsIgnoreCase("N")) {
-		                System.out.println("Programm wird beendet.");
-		                System.exit(0); 
-		            }
+					if (answer.equalsIgnoreCase("N")) {
+						System.out.println("Programm wird beendet.");
+						System.exit(0);
+					}
 				}
 			}
 
 			ses.login(account);
-			admin.show();
+			admin.show(account);
 			break;
 		}
 

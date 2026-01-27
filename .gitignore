@@ -3,3 +3,4 @@ target/*
 .mvn/
 .project
 .settings/
+/target/
