@@ -84,7 +84,7 @@ public class LoginMenu {
 				}
 			}
 			ses.login(account);
-			benutzer.show();
+			benutzer.show(account);
 			break;
 
 		case 3: {
