@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
+import io.github.arintasoglu.finance_manager.exception.NotFoundException;
 import io.github.arintasoglu.finance_manager.model.Transaction;
 import io.github.arintasoglu.finance_manager.model.Type;
 import io.github.arintasoglu.finance_manager.repository.JdbcCategoryRepository;
@@ -43,7 +44,7 @@ public class TransactionService {
 	public void deleteTransaction(int txId, UUID account_id) {
 		int exe = tran.deleteByIdAndAccountId(txId, account_id);
 		if (exe == 0)
-			throw new InvalidInputException("Es wurde keine Buchung mit der angegebenen ID gefunden.");
+			throw new NotFoundException("Es wurde keine Buchung mit der angegebenen ID gefunden.");
 
 	}
 

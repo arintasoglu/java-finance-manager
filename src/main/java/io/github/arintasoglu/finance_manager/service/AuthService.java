@@ -25,10 +25,10 @@ public class AuthService {
 		}
 
 		if (ac.getRole() != Role.ADMIN) {
-			throw new AuthenticationException("Kein Admin-Zugriff.");
+			throw new AuthenticationException("Kein Zugriff: Administratorkonto erforderlich.");
 		}
 		if (!(PasswordUtil.verify(password, ac.getPassword()))) {
-			throw new AuthenticationException("Passwort ist falsch.");
+			throw new AuthenticationException("Benutzername oder Passwort ist falsch");
 
 		}
 
@@ -52,12 +52,12 @@ public class AuthService {
 		}
 
 		if (!(PasswordUtil.verify(password, ac.getPassword()))) {
-			throw new AuthenticationException("Passwort ist falsch.");
+			throw new AuthenticationException("Benutzername oder Passwort ist falsch");
 
 		}
 
 		if (ac.getRole() != Role.USER) {
-			throw new AuthenticationException("Kein Benutzer-Zugriff.");
+			throw new AuthenticationException("Kein Zugriff: Benutzerkonto erforderlich.");
 		}
 
 		return ac;

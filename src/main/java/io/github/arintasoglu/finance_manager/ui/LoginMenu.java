@@ -1,6 +1,5 @@
 package io.github.arintasoglu.finance_manager.ui;
 
-import java.util.Scanner;
 import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
@@ -10,11 +9,25 @@ import io.github.arintasoglu.finance_manager.model.Role;
 import io.github.arintasoglu.finance_manager.service.AccountService;
 import io.github.arintasoglu.finance_manager.service.AuthService;
 import io.github.arintasoglu.finance_manager.service.Session;
+import io.github.arintasoglu.finance_manager.util.ConsoleInput;
 import io.github.arintasoglu.finance_manager.util.PasswordUtil;
 
 public class LoginMenu {
-	Scanner scan = new Scanner(System.in);
-	Session ses = new Session();
+
+	private final ConsoleInput in;
+	private final Session ses;
+	private final AdminMenu admin;
+	private final CustomerMenu benutzer;
+
+	private final AuthService auth = new AuthService();
+	private final AccountService ac = new AccountService();
+
+	public LoginMenu(ConsoleInput in, Session ses) {
+		this.in = in;
+		this.ses = ses;
+		this.admin = new AdminMenu(in, ses);
+		this.benutzer = new CustomerMenu(in, ses);
+	}
 
 	public void show() {
 		System.out.println("1. Admin-Anmeldung");
@@ -22,12 +35,10 @@ public class LoginMenu {
 		System.out.println("3. neue Admin-Konto Erstellen");
 
 		System.out.print("Auswahl: ");
-		int choice = scan.nextInt();
+
+		int choice = in.readInt("Auswahl: ");
+
 		Account account = null;
-		AuthService auth = new AuthService();
-		AdminMenu admin = new AdminMenu();
-		AccountService ac = new AccountService();
-		CustomerMenu benutzer = new CustomerMenu();
 
 		switch (choice) {
 
@@ -36,18 +47,14 @@ public class LoginMenu {
 			while (account == null) {
 
 				try {
-					System.out.println("Enter your username:");
-					String username = scan.next();
-
-					System.out.println("Enter your password:");
-					String password = scan.next();
+					String username = in.readNonBlank("Benutzername: ");
+					String password = in.readNonBlank("Passwort: ");
 
 					account = auth.loginAdmin(username, password);
 
 				} catch (InvalidInputException | AuthenticationException e) {
 					System.out.println(e.getMessage());
-					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-					String answer = scan.next();
+					String answer = in.readNonBlank("Erneut versuchen? (J/N): ");
 
 					if (answer.equalsIgnoreCase("N")) {
 						System.out.println("Programm wird beendet.");
@@ -64,18 +71,14 @@ public class LoginMenu {
 			while (account == null) {
 
 				try {
-					System.out.println("Enter your username:");
-					String username = scan.next();
-
-					System.out.println("Enter your password:");
-					String password = scan.next();
+					String username = in.readNonBlank("Benutzername: ");
+					String password = in.readNonBlank("Passwort: ");
 
 					account = auth.loginUser(username, password);
 
 				} catch (InvalidInputException | AuthenticationException e) {
 					System.out.println(e.getMessage());
-					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-					String answer = scan.next();
+					String answer = in.readNonBlank("Erneut versuchen? (J/N): ");
 
 					if (answer.equalsIgnoreCase("N")) {
 						System.out.println("Programm wird beendet.");
@@ -92,25 +95,19 @@ public class LoginMenu {
 			while (account == null) {
 
 				try {
-					System.out.println("Enter your username:");
-					String username = scan.next();
-
-					System.out.println("Enter your e-mail address:");
-					String email = scan.next();
-
-					System.out.println("Enter your password:");
-					String password = scan.next();
+					String username = in.readNonBlank("Benutzername: ");
+					String email = in.readNonBlank("E-Mail-Adresse: ");
+					String password = in.readNonBlank("Passwort: ");
 
 					Role role = Role.ADMIN;
 
 					account = ac.addAccount(UUID.randomUUID(), username, email, password, role);
 
-					System.out.println("Account erfolgreich erstellt!");
+					System.out.println("Erfolgreich: Administratorkonto wurde erstellt.");
 
 				} catch (InvalidInputException e) {
 					System.out.println(e.getMessage());
-					System.out.print("Erneut versuchen? (J = ja / N = beenden): ");
-					String answer = scan.next();
+					String answer = in.readNonBlank("Erneut versuchen? (J/N): ");
 
 					if (answer.equalsIgnoreCase("N")) {
 						System.out.println("Programm wird beendet.");
@@ -120,7 +117,9 @@ public class LoginMenu {
 			}
 
 			ses.login(account);
+
 			admin.show(account);
+
 			break;
 		}
 

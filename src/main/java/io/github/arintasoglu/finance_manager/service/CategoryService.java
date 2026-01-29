@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.exception.CategoryInUseException;
 import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
+import io.github.arintasoglu.finance_manager.exception.NotFoundException;
 import io.github.arintasoglu.finance_manager.model.Category;
 import io.github.arintasoglu.finance_manager.repository.JdbcCategoryRepository;
 
@@ -28,7 +29,7 @@ public class CategoryService {
 			throw new InvalidInputException("Der Kategoriename darf nicht leer sein.");
 		}
 		if (!(cate.existsByAccountIdAndName(id, name))) {
-			throw new InvalidInputException("Es existiert keine Kategorie mit dem angegebenen Namen.");
+			throw new NotFoundException("Es existiert keine Kategorie mit dem angegebenen Namen.");
 		}
 		cate.deleteByAccountIdAndName(id, name);
 		System.out.println(
@@ -38,7 +39,7 @@ public class CategoryService {
 
 	public void listCategories(UUID id) {
 		List<Category> list = cate.findAllByAccountId(id);
-		if (list == null | list.isEmpty()) {
+		if (list == null || list.isEmpty()) {
 			System.out.println("Es sind keine Kategorien vorhanden.");
 
 		}

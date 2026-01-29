@@ -1,21 +1,33 @@
 package io.github.arintasoglu.finance_manager.ui;
 
-import java.util.Scanner;
 import java.util.UUID;
 
+import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
+import io.github.arintasoglu.finance_manager.exception.CategoryInUseException;
+import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
+import io.github.arintasoglu.finance_manager.exception.NotFoundException;
+import io.github.arintasoglu.finance_manager.exception.UnauthorizedAccessException;
 import io.github.arintasoglu.finance_manager.model.Account;
 import io.github.arintasoglu.finance_manager.model.Role;
 import io.github.arintasoglu.finance_manager.service.AccountService;
 import io.github.arintasoglu.finance_manager.service.AuthService;
 import io.github.arintasoglu.finance_manager.service.Session;
+import io.github.arintasoglu.finance_manager.util.ConsoleInput;
 
 public class AdminMenu {
+
+	private final ConsoleInput in;
+	private final Session ses;
+
+	private final AccountService ac = new AccountService();
+
+	public AdminMenu(ConsoleInput in, Session ses) {
+		this.in = in;
+		this.ses = ses;
+	}
+
 	Account account = null;
 	AuthService auth = new AuthService();
-	AccountService ac = new AccountService();
-	Session ses = new Session();
-
-	Scanner scan = new Scanner(System.in);
 
 	public void show(Account curr) {
 		ses.login(curr);
@@ -28,42 +40,49 @@ public class AdminMenu {
 			System.out.println("3. Benutzerkonto löschen");
 			System.out.println("4. Abmelden");
 
-			System.out.print("Auswahl: ");
-			int choice = scan.nextInt();
+			int choice = in.readInt("Auswahl: ");
 
-			switch (choice) {
-			case 1:
-				System.out.println("Bitte geben Sie den Benutzernamen ein: ");
-				String benutzername = scan.next();
-				System.out.println("Bitte geben Sie das Passwort ein: ");
-				String password = scan.next();
-				Role role = Role.USER;
-				account = ac.addUser(UUID.randomUUID(), benutzername, ses.getCurrentUser().getUsername(), password,
-						role);
+			try {
 
-				break;
-			case 2:
-				System.out.println("Von Ihnen erstellte Benutzerkonten: ");
-				String email = ses.getCurrentUser().getUsername();
-				ac.findAll(email);
-				break;
-			case 3:
-				System.out.println("Bitte geben Sie den Benutzernamen des Kontos ein, das Sie löschen möchten: ");
-				String username = scan.next();
-				String ad = ses.getCurrentUser().getUsername();
-				ac.delete(username, ad);
-				break;
-			case 4:
-				inv = false;
-				break;
+				switch (choice) {
+				case 1:
+					String benutzername = in.readNonBlank("Benutzername: ");
+					String password = in.readNonBlank("Passwort: ");
+					Role role = Role.USER;
+					account = ac.addUser(UUID.randomUUID(), benutzername, ses.getCurrentUser().getUsername(), password,
+							role);
+					System.out.println("Benutzerkonto erstellt.");
 
-			default:
-				System.out.println("ungültige Eingabe");
+					break;
+				case 2:
+					System.out.println("Von Ihnen erstellte Benutzerkonten: ");
+					String email = ses.getCurrentUser().getUsername();
+					ac.findAll(email);
+					break;
+				case 3:
+					String username = in.readNonBlank("Benutzername zum Löschen: ");
+					String ad = ses.getCurrentUser().getUsername();
+					ac.delete(username, ad);
+					System.out.println("Erfolgreich: Benutzerkonto wurde gelöscht.");
+					break;
+				case 4:
+					inv = false;
+					ses.logout();
+					System.out.println("Abmeldung erfolgreich.");
+					break;
 
+				default:
+					System.out.println("ungültige Eingabe");
+
+				}
+
+			} catch (InvalidInputException | NotFoundException | UnauthorizedAccessException | AuthenticationException
+					| CategoryInUseException e) {
+				System.out.println("Fehler: " + e.getMessage());
 			}
 
 		}
-		scan.close();
+
 	}
 
 }

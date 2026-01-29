@@ -1,6 +1,7 @@
 package io.github.arintasoglu.finance_manager.repository;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.databaseconnection.DatabaseConnection;
-import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
-import io.github.arintasoglu.finance_manager.exception.CustomerException;
+
 import io.github.arintasoglu.finance_manager.exception.DataAccessException;
 import io.github.arintasoglu.finance_manager.model.Account;
 import io.github.arintasoglu.finance_manager.model.Role;
@@ -34,7 +34,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException("Failed to find account by username."); // TODO
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen."); // TODO
 
 		}
 		return acc;
@@ -53,7 +53,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
 			exe = pst.executeUpdate();
 			if (exe == 0)
-				throw new DataAccessException("ein fehler beim  datenbank ");
+				throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen. ");
 
 		} catch (SQLException e) {
 			throw new DataAccessException(" "); // TODO
@@ -73,7 +73,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
 			return false;
 		} catch (SQLException e) {
-			throw new DataAccessException(" "); // TODO
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 		}
 
 	}
@@ -100,7 +100,7 @@ public class JdbcAccountRepository implements AccountRepository {
 			return users;
 
 		} catch (SQLException e) {
-			throw new DataAccessException("");
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 		}
 
 	}
@@ -121,7 +121,7 @@ public class JdbcAccountRepository implements AccountRepository {
 			b = ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DataAccessException(" ");
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 
 		}
 

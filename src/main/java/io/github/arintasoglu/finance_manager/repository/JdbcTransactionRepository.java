@@ -31,10 +31,10 @@ public class JdbcTransactionRepository implements TransactionRepository {
 
 			exe = pst.executeUpdate();
 			if (exe == 0)
-				throw new DataAccessException("ein fehler beim  datenbank ");
+				throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 
 		} catch (SQLException e) {
-			throw new DataAccessException(" "); // TODO
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen."); 
 		}
 
 	}
@@ -56,7 +56,7 @@ public class JdbcTransactionRepository implements TransactionRepository {
 			return list;
 
 		} catch (SQLException e) {
-			throw new DataAccessException(" ");
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 
 		}
 
@@ -73,7 +73,7 @@ public class JdbcTransactionRepository implements TransactionRepository {
 			return exe;
 
 		} catch (SQLException e) {
-			throw new DataAccessException(" ");
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 
 		}
 

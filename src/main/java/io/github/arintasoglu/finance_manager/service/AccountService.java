@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.exception.DataAccessException;
 import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
+import io.github.arintasoglu.finance_manager.exception.NotFoundException;
+import io.github.arintasoglu.finance_manager.exception.UnauthorizedAccessException;
 import io.github.arintasoglu.finance_manager.model.Account;
 import io.github.arintasoglu.finance_manager.model.Role;
 import io.github.arintasoglu.finance_manager.repository.AccountRepository;
@@ -22,7 +24,7 @@ public class AccountService {
 		}
 
 		if (!isValidEmail(email)) {
-			throw new InvalidInputException("Email ist ungültig.");
+			throw new InvalidInputException("E-Mail-Adresse ist ungültig.");
 		}
 
 		if (password == null || password.isBlank()) {
@@ -84,12 +86,12 @@ public class AccountService {
 			throw new InvalidInputException("Username darf nicht leer sein.");
 		}
 		if (ac == null) {
-			throw new InvalidInputException("Der angegebene Benutzername existiert nicht.");
+			throw new NotFoundException("Der angegebene Benutzername existiert nicht.");
 		}
 
 		if (!(ac.getEmail().equals(admin))) {
-			throw new InvalidInputException(
-					"Sie sind nicht berechtigt, dieses Konto zu löschen, da Sie es nicht erstellt haben.");
+			throw new UnauthorizedAccessException(
+					"Sie haben keine Berechtigung für diese Aktion.");
 
 		}
 		int x = a.delete(username);
