@@ -99,7 +99,7 @@ public class Transaction {
 				Kategorie:     %s
 				Beschreibung:  %s
 				----------------------------------------
-				""".formatted(id, type, amount, date, categoryName,
+				""".formatted(id, type == Type.INCOME ? "Einnahme" : "Ausgabe", amount, date, categoryName,
 				description != null && !description.isBlank() ? description : "Keine Beschreibung");
 	}
 

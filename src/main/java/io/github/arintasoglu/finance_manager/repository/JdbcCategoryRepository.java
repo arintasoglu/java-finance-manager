@@ -1,18 +1,16 @@
 package io.github.arintasoglu.finance_manager.repository;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import io.github.arintasoglu.finance_manager.databaseconnection.DatabaseConnection;
 import io.github.arintasoglu.finance_manager.exception.DataAccessException;
-import io.github.arintasoglu.finance_manager.model.Account;
 import io.github.arintasoglu.finance_manager.model.Category;
-import io.github.arintasoglu.finance_manager.model.Role;
 
 public class JdbcCategoryRepository implements CategoryRepository {
 

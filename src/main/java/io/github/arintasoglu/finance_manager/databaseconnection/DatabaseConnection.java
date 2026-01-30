@@ -10,16 +10,15 @@ public class DatabaseConnection {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String url = "jdbc:mysql://localhost:3306/finance";
 		try {
 			con = DriverManager.getConnection(url, "root", "root");
-		}
-		catch (Exception e) {
-			throw new DataAccessException("Database connection failed.");
+		} catch (Exception e) {
+			throw new DataAccessException("Datenbankverbindung fehlgeschlagen.");
 		}
 		return con;
 	}

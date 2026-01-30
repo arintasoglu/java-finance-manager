@@ -1,7 +1,6 @@
 package io.github.arintasoglu.finance_manager.ui;
 
 import java.util.UUID;
-
 import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
 import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
 import io.github.arintasoglu.finance_manager.model.Account;
@@ -10,7 +9,6 @@ import io.github.arintasoglu.finance_manager.service.AccountService;
 import io.github.arintasoglu.finance_manager.service.AuthService;
 import io.github.arintasoglu.finance_manager.service.Session;
 import io.github.arintasoglu.finance_manager.util.ConsoleInput;
-import io.github.arintasoglu.finance_manager.util.PasswordUtil;
 
 public class LoginMenu {
 
@@ -33,8 +31,6 @@ public class LoginMenu {
 		System.out.println("1. Admin-Anmeldung");
 		System.out.println("2. Benutzer-Anmeldung");
 		System.out.println("3. neue Admin-Konto Erstellen");
-
-		System.out.print("Auswahl: ");
 
 		int choice = in.readInt("Auswahl: ");
 

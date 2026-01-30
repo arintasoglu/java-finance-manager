@@ -34,7 +34,7 @@ public class JdbcTransactionRepository implements TransactionRepository {
 				throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 
 		} catch (SQLException e) {
-			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen."); 
+			throw new DataAccessException("Datenbankfehler. Bitte später erneut versuchen.");
 		}
 
 	}

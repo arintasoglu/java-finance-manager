@@ -2,15 +2,15 @@ package io.github.arintasoglu.finance_manager.ui;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Scanner;
+import java.util.List;
 import java.util.UUID;
-
 import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
 import io.github.arintasoglu.finance_manager.exception.CategoryInUseException;
 import io.github.arintasoglu.finance_manager.exception.InvalidInputException;
 import io.github.arintasoglu.finance_manager.exception.NotFoundException;
 import io.github.arintasoglu.finance_manager.exception.UnauthorizedAccessException;
 import io.github.arintasoglu.finance_manager.model.Account;
+import io.github.arintasoglu.finance_manager.model.Transaction;
 import io.github.arintasoglu.finance_manager.model.Type;
 import io.github.arintasoglu.finance_manager.service.CategoryService;
 import io.github.arintasoglu.finance_manager.service.Session;
@@ -66,7 +66,7 @@ public class CustomerMenu {
 						throw new InvalidInputException("Bitte 1 oder 2 eingeben.");
 
 					BigDecimal amount = in.readPositiveBigDecimal("Betrag: ");
-					LocalDate date = in.readDate("Datum");
+					LocalDate date = in.readDate("Datum: ");
 					String description = in.readLine("Beschreibung (optional, Enter = leer): ").trim();
 					if (description.isEmpty())
 						description = null;
@@ -79,7 +79,10 @@ public class CustomerMenu {
 
 				case 2:
 					System.out.println("Buchungen:");
-					transac.listTransactions(account_id);
+					List<Transaction> list = transac.listTransactions(account_id);
+					for (Transaction x : list) {
+						System.out.println(x);
+					}
 					break;
 
 				case 3:
