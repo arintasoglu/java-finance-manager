@@ -2,7 +2,10 @@ package io.github.arintasoglu.finance_manager.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.github.arintasoglu.finance_manager.exception.ErrorMessages;
@@ -55,6 +58,27 @@ public class TransactionService {
 		int exe = tran.deleteByIdAndAccountId(txId, account_id);
 		if (exe == 0)
 			throw new NotFoundException(ErrorMessages.TX_NOT_FOUND);
+
+	}
+
+	public Map<String, BigDecimal> report(UUID account_id) {
+		Map<String, BigDecimal> dict = new HashMap<>();
+		BigDecimal totalIncome = new BigDecimal("0");
+		BigDecimal totalExpense = new BigDecimal("0");
+		List<Transaction> list = tran.findAllByAccountId(account_id);
+		for (Transaction t : list) {
+			if (t.getType() == Type.EXPENSE) {
+				totalExpense = totalExpense.add(t.getAmount());
+
+			}
+			if (t.getType() == Type.INCOME) {
+				totalIncome = totalIncome.add(t.getAmount());
+			}
+		}
+		dict.put("totalIncome", totalIncome);
+		dict.put("totalExpense", totalExpense);
+
+		return dict;
 
 	}
 

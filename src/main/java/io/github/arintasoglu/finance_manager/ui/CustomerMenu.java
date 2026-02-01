@@ -3,6 +3,7 @@ package io.github.arintasoglu.finance_manager.ui;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import io.github.arintasoglu.finance_manager.exception.AuthenticationException;
 import io.github.arintasoglu.finance_manager.exception.CategoryInUseException;
@@ -42,7 +43,7 @@ public class CustomerMenu {
 			System.out.println("4. Kategorie hinzufügen");
 			System.out.println("5. Kategorie löschen");
 			System.out.println("6. Kategorien auflisten");
-			System.out.println("7. Reports");
+			System.out.println("7. Gesamtübersicht: Einnahmen und Ausgaben");
 			System.out.println("8. Abmelden");
 
 			int choice = in.readInt("Auswahl: ");
@@ -110,7 +111,9 @@ public class CustomerMenu {
 					categser.listCategories(account_id);
 					break;
 				case 7:
-					System.out.println("Reports");
+					Map<String, BigDecimal> dict = transac.report(account_id);
+					System.out.println("Gesamteinnahmen: " + dict.get("totalIncome") + " €");
+					System.out.println("Gesamtausgaben: " + dict.get("totalExpense") + " €");
 					break;
 				case 8:
 					inv = false;
